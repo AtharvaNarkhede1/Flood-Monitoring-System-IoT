@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import WaterLevelCard from "@/components/WaterLevelCard";
 import FloatSensorCard from "@/components/FloatSensorCard";
 import PredictionCard from "@/components/PredictionCard";
+import WaterFlowCard from "@/components/WaterFlowCard";
 import WeatherCard from "@/components/WeatherCard";
 import TempHumidityCard from "@/components/TempHumidityCard";
 import { subscribeToData, type SensorData, type WeatherData } from "@/lib/api";
@@ -14,7 +15,9 @@ const Index = () => {
     waterLevel: 0,
     floatSensor: false,
     temperature: 0,
-    humidity: 0
+    humidity: 0,
+    flowRate: 0,
+    totalVolume: 0,
   });
   
   const [weatherData, setWeatherData] = useState<WeatherData>({
@@ -82,6 +85,10 @@ const Index = () => {
                 waterLevel={sensorData.waterLevel}
                 floatSensor={sensorData.floatSensor}
                 temperature={sensorData.temperature}
+              />
+              <WaterFlowCard 
+                flowRate={sensorData.flowRate || 0}
+                totalVolume={sensorData.totalVolume || 0}
               />
             </div>
             

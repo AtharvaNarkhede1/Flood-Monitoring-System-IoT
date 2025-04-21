@@ -7,7 +7,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Droplets size={24} className="text-white" />
-          <h1 className="text-xl font-bold">Team Torpedo</h1>
+          <h1 className="text-xl font-bold">Flood Monitoring and Prediction System</h1>
         </div>
         
         <nav className="hidden md:block">

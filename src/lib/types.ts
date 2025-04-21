@@ -14,6 +14,8 @@ export interface SensorData {
   floatSensor: boolean;
   temperature: number;
   humidity: number;
+  flowRate: number;  // L/min
+  totalVolume: number;  // Total liters
 }
 
 export interface FirebaseData {
