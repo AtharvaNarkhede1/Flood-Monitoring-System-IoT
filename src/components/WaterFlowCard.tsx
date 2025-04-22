@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HalfCircleGauge } from "@/components/ui/custom-icons";
 import { DropletIcon } from "lucide-react";
@@ -47,4 +46,3 @@ const WaterFlowCard = ({ flowRate, totalVolume }: WaterFlowCardProps) => {
 };
 
 export default WaterFlowCard;
-

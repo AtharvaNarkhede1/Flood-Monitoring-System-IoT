@@ -24,13 +24,14 @@ export const subscribeToData = (
       const latestIoT = iotData[keys[keys.length - 1]] as FirebaseData;
       console.log("Latest IoT data:", latestIoT);
 
-      // Use IoT data directly without converting percentage
       const sensorData: SensorData = {
         waterLevel: latestIoT.P || 0, // Use P directly as percentage
         floatSensor: latestIoT.float_triggered === "true",
         distance: latestIoT.distance || 0, // Use distance directly
         temperature: latestIoT.temperature || 0,
-        humidity: latestIoT.humidity || 0
+        humidity: latestIoT.humidity || 0,
+        flowRate: latestIoT.flow_lpm || 0, // Include flow rate
+        totalVolume: latestIoT.total_liters || 0 // Include total liters
       };
 
       // Get weather data and calculate prediction
