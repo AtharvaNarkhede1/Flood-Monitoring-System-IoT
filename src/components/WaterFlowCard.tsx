@@ -18,8 +18,8 @@ const WaterFlowCard = ({ flowRate, totalVolume }: WaterFlowCardProps) => {
   }
   
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-2">
+    <Card className="h-8/12 mt-6">
+      <CardHeader className="">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Water Flow Rate</CardTitle>
           <DropletIcon className="h-5 w-5 text-primary" />

@@ -17,7 +17,7 @@ const TempHumidityCard = ({ temperature, humidity }: TempHumidityCardProps) => {
   const isDry = humidity < 30;
   
   return (
-    <Card className="h-full">
+    <Card className="h-8/12">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Temperature & Humidity</CardTitle>

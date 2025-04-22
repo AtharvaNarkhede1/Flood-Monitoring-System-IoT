@@ -25,7 +25,7 @@ const WaterLevelCard = ({ waterLevel, distance }: WaterLevelCardProps) => {
   const progress = (waterLevel / 100) * circumference;
 
   return (
-    <Card className="h-full">
+    <Card className="h-8/12">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Water Level</CardTitle>

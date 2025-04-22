@@ -36,7 +36,7 @@ const PredictionCard = ({
   }
   
   return (
-    <Card className="h-full">
+    <Card className="h-8/12">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Total Prediction Probability</CardTitle>

@@ -38,7 +38,7 @@ const WeatherCard = ({ weatherData }: WeatherCardProps) => {
   if (!weatherData) {
     // Display a loading or error message if `weatherData` is null
     return (
-      <Card className="h-full">
+      <Card className="h-8/12">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-medium">Weather Data</CardTitle>
@@ -55,7 +55,7 @@ const WeatherCard = ({ weatherData }: WeatherCardProps) => {
   }
 
   return (
-    <Card className="h-full">
+    <Card className="h-8/12">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium">Weather Data</CardTitle>

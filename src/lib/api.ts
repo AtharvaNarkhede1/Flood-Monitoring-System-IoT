@@ -76,7 +76,9 @@ export const subscribeToData = (
           floatSensor: false,
           distance: 0,
           temperature: 0,
-          humidity: 0
+          humidity: 0,
+          flowRate: 0,
+          totalVolume: 0
         },
         weatherData: {
           location: CITY,
