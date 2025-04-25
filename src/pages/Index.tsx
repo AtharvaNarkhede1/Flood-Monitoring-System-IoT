@@ -55,10 +55,10 @@ const Index = () => {
   }, [loading]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
-      <main className="container px-4 py-6">
+      <main className="container px-4 py-6 flex-grow">
         {error && (
           <div className="mb-4 p-3 bg-destructive/15 text-destructive rounded-md">
             {error}
@@ -102,6 +102,20 @@ const Index = () => {
           </div>
         )}
       </main>
+            
+      <footer className="bg-gray-100 dark:bg-gray-800 py-6 mt-auto">
+        <div className="container mx-auto text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            © {new Date().getFullYear()} All rights reserved. 
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+            Team Torpedo
+            <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+            atharvanarkhede969@gmail.com
+              </p>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
