@@ -5,6 +5,7 @@ import { WeatherData, SensorData, FirebaseData } from './types';
 export type { WeatherData, SensorData };
 
 // Fetch data from Firebase
+// Fetch data from Firebase
 export const subscribeToData = (
   onDataUpdate: (data: {
     sensorData: SensorData;
@@ -15,6 +16,7 @@ export const subscribeToData = (
   const today = new Date().toISOString().split('T')[0];
   const iotRef = ref(db, `flood_monitoring/iot_data/latest/${today}`);
   const weatherRef = ref(db, `flood_monitoring/weather_data/${today}`);
+  const flowDataRef = ref(db, `flood_monitoring/flow_data/${today}`); // Add flow_data reference
 
   // Subscribe to IoT data
   const iotListener = onValue(iotRef, (snapshot) => {
@@ -24,49 +26,66 @@ export const subscribeToData = (
       const latestIoT = iotData[keys[keys.length - 1]] as FirebaseData;
       console.log("Latest IoT data:", latestIoT);
 
-      const sensorData: SensorData = {
+      const sensorData: Partial<SensorData> = {
         waterLevel: latestIoT.P || 0, // Use P directly as percentage
         floatSensor: latestIoT.float_triggered === "true",
         distance: latestIoT.distance || 0, // Use distance directly
         temperature: latestIoT.temperature || 0,
-        humidity: latestIoT.humidity || 0,
-        flowRate: latestIoT.flow_lpm || 0, // Include flow rate
-        totalVolume: latestIoT.total_liters || 0 // Include total liters
+        humidity: latestIoT.humidity || 0
       };
 
-      // Get weather data and calculate prediction
-      onValue(weatherRef, (weatherSnapshot) => {
-        const weatherData = weatherSnapshot.val();
-        console.log("Weather data:", weatherData);
-        
-        const latestWeather = weatherData ? weatherData[Object.keys(weatherData)[Object.keys(weatherData).length - 1]] : null;
-        console.log("Latest weather:", latestWeather);
+      // Fetch flow data
+      onValue(flowDataRef, (flowSnapshot) => {
+        const flowData = flowSnapshot.val();
+        console.log("Flow data:", flowData);
 
-        const weatherInfo: WeatherData = latestWeather ? {
-          location: CITY,
-          temperature: latestWeather.temperature,
-          humidity: latestWeather.humidity,
-          windSpeed: latestWeather.wind_speed,
-          precipitation: latestWeather.precipitation,
-          description: latestWeather.weather,
-          icon: getWeatherIcon(latestWeather.weather)
-        } : {
-          location: "Loading...",
-          temperature: 0,
-          humidity: 0,
-          windSpeed: 0,
-          precipitation: 0,
-          description: "Connecting...",
-          icon: "03d"
-        };
+        // Get the latest flow data
+        const latestFlowKey = flowData ? Object.keys(flowData).pop() : null;
+        const latestFlowData = latestFlowKey ? flowData[latestFlowKey] : null;
 
-        const probability = calculatePredictionProbability(sensorData, weatherInfo);
-        
-        onDataUpdate({
-          sensorData,
-          weatherData: weatherInfo,
-          predictionProbability: probability
-        });
+        // Add flow rate and total liters to sensor data
+        if (latestFlowData) {
+          sensorData.flowRate = latestFlowData.flow_lpm || 0;
+          sensorData.totalVolume = latestFlowData.total_liters || 0;
+        } else {
+          sensorData.flowRate = 0;
+          sensorData.totalVolume = 0;
+        }
+
+        // Get weather data and calculate prediction
+        onValue(weatherRef, (weatherSnapshot) => {
+          const weatherData = weatherSnapshot.val();
+          console.log("Weather data:", weatherData);
+
+          const latestWeather = weatherData ? weatherData[Object.keys(weatherData)[Object.keys(weatherData).length - 1]] : null;
+          console.log("Latest weather:", latestWeather);
+
+          const weatherInfo: WeatherData = latestWeather ? {
+            location: CITY,
+            temperature: latestWeather.temperature,
+            humidity: latestWeather.humidity,
+            windSpeed: latestWeather.wind_speed,
+            precipitation: latestWeather.precipitation,
+            description: latestWeather.weather,
+            icon: getWeatherIcon(latestWeather.weather)
+          } : {
+            location: "Loading...",
+            temperature: 0,
+            humidity: 0,
+            windSpeed: 0,
+            precipitation: 0,
+            description: "Connecting...",
+            icon: "03d"
+          };
+
+          const probability = calculatePredictionProbability(sensorData as SensorData, weatherInfo);
+
+          onDataUpdate({
+            sensorData: sensorData as SensorData,
+            weatherData: weatherInfo,
+            predictionProbability: probability
+          });
+        }, { onlyOnce: true });
       }, { onlyOnce: true });
     } else {
       console.log("No IoT data available");
@@ -99,6 +118,7 @@ export const subscribeToData = (
   return () => {
     off(iotRef);
     off(weatherRef);
+    off(flowDataRef); // Clean up flow data listener
   };
 };
 
