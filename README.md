@@ -1,6 +1,3 @@
-
-# Aqua Guardian Insight Hub
-
 A web application dashboard for monitoring water levels, environmental conditions, and flood prediction analytics from IoT sensors and weather APIs.
 
 ## Features
